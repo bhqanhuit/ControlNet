@@ -21,6 +21,7 @@ from ldm.models.diffusion.ddim import DDIMSampler
 
 class ControlledUnetModel(UNetModel):
     def forward(self, x, timesteps=None, context=None, control=None, only_mid_control=False, **kwargs):
+        print("ControlledUnetModel")
         hs = []
         with torch.no_grad():
             t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False)
@@ -282,6 +283,7 @@ class ControlNet(nn.Module):
         return TimestepEmbedSequential(zero_module(conv_nd(self.dims, channels, channels, 1, padding=0)))
 
     def forward(self, x, hint, timesteps, context, **kwargs):
+        print("ControlNet")
         t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False)
         emb = self.time_embed(t_emb)
 
@@ -306,8 +308,8 @@ class ControlNet(nn.Module):
 
 
 class ControlLDM(LatentDiffusion):
-
     def __init__(self, control_stage_config, control_key, only_mid_control, *args, **kwargs):
+        print("ControlLDM")
         super().__init__(*args, **kwargs)
         self.control_model = instantiate_from_config(control_stage_config)
         self.control_key = control_key
