@@ -1,16 +1,6 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
+from onedrivedownloader import download
 
-df = pd.read_csv("cardio_train.csv", sep=";")
 
-X = df.iloc[ : , 1:-1]
-y = df["cardio"]
+url = "curl -I https://davian-lab.tw4.quickconnect.to/d/s/p9A5kbK4danKU4WeoqSMiudPFX7Qmiau/webapi/entry.cgi/SYNO.SynologyDrive.Files/images_mqset001.zip?api=SYNO.SynologyDrive.Files&method=download&version=2&download_type=%22download%22&files=%5B%22id%3A692403417502495374%22%5D&force_download=true&json_error=true&_dc=1715245037491&sharing_token=%22ZcSiSiVuJpSW_3qeEF97XYtExUQqKeb1p8H2Lbr.32iSJ2.DyHNxNkLV46rSLT9fvzKl4gMZ1xj4Pdfn5HBnr20Q60ngATR7teJ1lIXkFfkMvGXNHYTIxdBdPt2w39DEHRN9oTk58_DD0AoVLvXak2G0SVyhmkSMdVnkQXyUp0ZPy6l572oCl3MTCnCdsm1B86wBWbDlyslk5EK3YLDPNISWWZikMRwl_yId2VMNB5Y14OMB8xZIuWYB%22"
+download(url, filename="something.zip", unzip=True, unzip_path="./data")
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-
-kernel = 1.0 * RBF(1.0)
-gpc = GaussianProcessClassifier(kernel = kernel, random_state = 778).fit(X_train, y_train)
-
-y_pred = gpc.predict(X_test)
